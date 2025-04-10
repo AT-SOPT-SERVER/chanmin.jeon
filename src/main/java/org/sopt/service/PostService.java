@@ -4,18 +4,19 @@ import org.sopt.domain.Post;
 import org.sopt.repository.PostRepository;
 
 import java.util.List;
+import org.sopt.util.PostIdGenerator;
 import org.sopt.validator.PostValidator;
 
 public class PostService {
   private final PostRepository postRepository = new PostRepository();
-  private int postId = 1;
 
   public void createPost(String title) {
     PostValidator.validateTitle(title);
     if (isDuplicateTitle(title)) {
       throw new IllegalArgumentException("중복되는 제목은 등록할 수 없습니다.");
     }
-    Post post = new Post(postId++, title);
+    int id = PostIdGenerator.generateId();
+    Post post = new Post(id, title);
     postRepository.save(post);
   }
 
