@@ -1,5 +1,7 @@
 package org.sopt.service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import org.sopt.domain.Post;
 import org.sopt.repository.PostRepository;
 
@@ -9,15 +11,23 @@ import org.sopt.validator.PostValidator;
 
 public class PostService {
   private final PostRepository postRepository = new PostRepository();
+  private LocalDateTime lastModifiedAt;
 
   public void createPost(String title) {
     PostValidator.validateTitle(title);
     if (isDuplicateTitle(title)) {
       throw new IllegalArgumentException("중복되는 제목은 등록할 수 없습니다.");
     }
-    int id = PostIdGenerator.generateId();
-    Post post = new Post(id, title);
+
+    if (lastModifiedAt != null) {
+      Duration duration = Duration.between(lastModifiedAt, LocalDateTime.now());
+      if (duration.toMinutes() < 3) {
+        throw new IllegalArgumentException("마지막 게시글 작성 이후 3분이 지나지 않았습니다.");
+      }
+    }
+    Post post = new Post(PostIdGenerator.generateId(), title);
     postRepository.save(post);
+    lastModifiedAt = LocalDateTime.now();
   }
 
   public List<Post> getAllPosts() {
