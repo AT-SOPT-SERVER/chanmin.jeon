@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 import org.sopt.controller.PostController;
 import org.sopt.domain.Post;
+import org.sopt.util.PostFileHandler;
 
 public class Main {
   public static void main(String[] args) {
@@ -102,6 +103,24 @@ public class Main {
           }
           break;
 
+        case "7":
+          System.out.println("\n📀 [게시글 파일에 저장]");
+          PostFileHandler.savePosts(controller.getAllPosts());
+          System.out.println("✅ 게시글이 파일에 저장되었습니다.");
+          break;
+
+        case "8":
+          List<Post> savedPosts = PostFileHandler.loadPosts();
+          if (savedPosts.isEmpty()) {
+            System.out.println("❗️파일에 저장된 게시글이 없습니다.");
+          } else {
+            System.out.println("📁 파일에 저장된 게시글 목록");
+            for (Post post : savedPosts) {
+              System.out.println("id: " + post.getId() + " | title: " + post.getTitle());
+            }
+          }
+          break;
+
         case "0":
           System.out.println("\n👋 프로그램을 종료합니다. 감사합니다!");
           return;
@@ -126,6 +145,8 @@ public class Main {
     System.out.println("4️⃣  게시글 수정");
     System.out.println("5️⃣  게시글 삭제");
     System.out.println("6️⃣  게시글 검색");
+    System.out.println("7️⃣  게시글 파일에 저장");
+    System.out.println("8️⃣  게시글 목록 파일에서 불러오기");
     System.out.println("0️⃣  프로그램 종료");
     System.out.println("=====================================");
   }

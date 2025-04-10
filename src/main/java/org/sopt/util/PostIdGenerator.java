@@ -6,4 +6,8 @@ public class PostIdGenerator {
   public static int generateId() {
     return id++;
   }
+
+  public static void initializedId(final int startId) {
+    id = startId;
+  }
 }

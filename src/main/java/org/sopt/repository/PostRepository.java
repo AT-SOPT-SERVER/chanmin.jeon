@@ -1,12 +1,28 @@
 package org.sopt.repository;
 
-import org.sopt.domain.Post;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.sopt.domain.Post;
+import org.sopt.util.PostFileHandler;
+import org.sopt.util.PostIdGenerator;
 
 public class PostRepository {
-  List<Post> postList = new ArrayList<>();
+
+  List<Post> postList;
+
+  public PostRepository() {
+    this.postList = PostFileHandler.loadPosts();
+
+    int maxId = 0;
+
+    for (Post post : postList) {
+      if (post.getId() > maxId) {
+        maxId = post.getId();
+      }
+    }
+
+    PostIdGenerator.initializedId(maxId + 1);
+  }
 
   public void save(Post post) {
     postList.add(post);
