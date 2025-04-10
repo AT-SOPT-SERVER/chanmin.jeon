@@ -12,6 +12,9 @@ public class PostService {
 
   public void createPost(String title) {
     PostValidator.validateTitle(title);
+    if (isDuplicateTitle(title)) {
+      throw new IllegalArgumentException("중복되는 제목은 등록할 수 없습니다.");
+    }
     Post post = new Post(postId++, title);
     postRepository.save(post);
   }
@@ -30,6 +33,20 @@ public class PostService {
 
   public Boolean updatePostTitle(int id, String newTitle) {
     PostValidator.validateTitle(newTitle);
+
+    if (isDuplicateTitle(newTitle)) {
+      throw new IllegalArgumentException("중복되는 제목은 등록할 수 없습니다.");
+    }
     return postRepository.update(id, newTitle);
+  }
+
+  public boolean isDuplicateTitle(final String title) {
+    List<Post> posts = postRepository.findAll();
+    for (Post post : posts) {
+      if (post.getTitle().equals(title)) {
+        return true;
+      }
+    }
+    return false;
   }
 }

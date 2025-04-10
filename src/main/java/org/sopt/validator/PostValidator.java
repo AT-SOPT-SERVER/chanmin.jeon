@@ -12,5 +12,7 @@ public class PostValidator {
     if (title.length() > MAX_TITLE_LENGTH) {
       throw new IllegalArgumentException("제목은 30자를 넘을 수 없습니다.");
     }
+
+
   }
 }
