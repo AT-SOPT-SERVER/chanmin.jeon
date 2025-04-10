@@ -29,11 +29,18 @@ public class PostFileHandler {
     List<Post> posts = new ArrayList<>();
     File file = new File(FILE_PATH);
 
-    if (!file.exists()) return posts;
+    if (!file.exists()) {
+      return posts;
+    }
 
     try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
       String line;
       while ((line = reader.readLine()) != null) {
+
+        if (line.isBlank() || !line.contains("|")) {
+          continue;
+        }
+
         String[] split = line.split("\\|");
 
         String idPart = split[0].trim();

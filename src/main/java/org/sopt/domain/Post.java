@@ -1,6 +1,7 @@
 package org.sopt.domain;
 
 public class Post {
+
   private int id;
   private String title;
 

@@ -1,6 +1,5 @@
 package org.sopt.repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.sopt.domain.Post;
 import org.sopt.util.PostFileHandler;
@@ -26,9 +25,11 @@ public class PostRepository {
 
   public void save(Post post) {
     postList.add(post);
+    PostFileHandler.savePosts(postList);
   }
 
   public List<Post> findAll() {
+    postList = PostFileHandler.loadPosts();
     return postList;
   }
 
@@ -43,19 +44,26 @@ public class PostRepository {
   }
 
   public boolean delete(int id) {
+    boolean isMatched = false;
     for (Post post : postList) {
       if (post.getId() == id) {
         postList.remove(post);
-        return true;
+        isMatched = true;
       }
     }
-    return false;
+
+    if (isMatched) {
+      PostFileHandler.savePosts(postList);
+    }
+
+    return isMatched;
   }
 
   public Boolean update(int id, String newTitle) {
     for (Post post : postList) {
       if (post.getId() == id) {
         post.setTitle(newTitle);
+        PostFileHandler.savePosts(postList);
         return true;
       }
     }

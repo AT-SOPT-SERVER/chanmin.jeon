@@ -3,14 +3,14 @@ package org.sopt.service;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import org.sopt.domain.Post;
 import org.sopt.repository.PostRepository;
-
-import java.util.List;
 import org.sopt.util.PostIdGenerator;
 import org.sopt.validator.PostValidator;
 
 public class PostService {
+
   private final PostRepository postRepository = new PostRepository();
   private LocalDateTime lastModifiedAt;
 
