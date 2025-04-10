@@ -16,18 +16,19 @@ public class PostController {
     return postService.getAllPosts();
   }
 
-  public Post getPostById(int id) {
+  public Post getPostById(final int id) {
     return postService.getPostById(id);
   }
-  public Boolean updatePostTitle(int id, String newTitle) {
-    return null;
+
+  public Boolean updatePostTitle(final int id, final String newTitle) {
+    return postService.updatePostTitle(id, newTitle);
   }
 
-  public boolean deletePostById(int id) {
+  public boolean deletePostById(final int id) {
     return postService.deletePostById(id);
   }
 
-  public List<Post> searchPostsByKeyword(String keyword) {
+  public List<Post> searchPostsByKeyword(final String keyword) {
     return null;
   }
 

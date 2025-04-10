@@ -35,4 +35,14 @@ public class PostRepository {
     }
     return false;
   }
+
+  public Boolean update(int id, String newTitle) {
+    for (Post post : postList) {
+      if (post.getId() == id) {
+        post.setTitle(newTitle);
+        return true;
+      }
+    }
+    return false;
+  }
 }
