@@ -2,6 +2,7 @@ package org.sopt.service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import org.sopt.domain.Post;
 import org.sopt.repository.PostRepository;
 
@@ -59,5 +60,18 @@ public class PostService {
       }
     }
     return false;
+  }
+
+  public List<Post> searchPostsByKeyword(String keyword) {
+    List<Post> posts = postRepository.findAll();
+    List<Post> matchedPosts = new ArrayList<>();
+
+    for (Post post : posts) {
+      if (post.getTitle().contains(keyword)) {
+        matchedPosts.add(post);
+      }
+    }
+
+    return matchedPosts;
   }
 }
