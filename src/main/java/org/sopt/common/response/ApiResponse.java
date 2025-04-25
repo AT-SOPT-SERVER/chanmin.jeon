@@ -1,8 +1,13 @@
 package org.sopt.common.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 public class ApiResponse<T> {
+
   private final int statusCode;
   private final String message;
+
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private final T data;
 
   public ApiResponse(int statusCode, String message, T data) {
