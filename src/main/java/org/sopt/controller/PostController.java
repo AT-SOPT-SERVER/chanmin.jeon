@@ -27,7 +27,7 @@ public class PostController {
 
   @PostMapping("/posts")
   public ResponseEntity<ApiResponse<Void>> createPost(@RequestBody final PostRequest postRequest) {
-    postService.createPost(postRequest.getTitle());
+    postService.createPost(postRequest.title());
     return ResponseEntity
         .status(HttpStatus.CREATED)
         .body(ApiResponse.success("게시글이 성공적으로 작성되었습니다.", null));
