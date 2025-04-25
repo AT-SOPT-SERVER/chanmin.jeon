@@ -1,24 +1,46 @@
 package org.sopt.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import java.time.LocalDateTime;
+
+@Entity
 public class Post {
 
-  private int id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
   private String title;
+  private LocalDateTime createdAt;
 
-  public Post(int id, String title) {
-    this.id = id;
+  protected Post() {
+  }
+
+  public Post(String title) {
     this.title = title;
   }
 
-  public int getId() {
-    return this.id;
+  @PrePersist
+  protected void onCreate() {
+    this.createdAt = LocalDateTime.now();
+  }
+
+  public Long getId() {
+    return id;
   }
 
   public String getTitle() {
     return this.title;
   }
 
-  public void setTitle(String title) {
-    this.title = title;
+  public LocalDateTime getCreatedAt() {
+    return this.createdAt;
+  }
+
+  public void updateTitle(String newTitle) {
+    this.title = newTitle;
   }
 }
