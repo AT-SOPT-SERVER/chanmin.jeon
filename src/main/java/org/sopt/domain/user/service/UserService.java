@@ -22,7 +22,7 @@ public class UserService {
   public void createUser(UserCreateRequest request) {
     validateNickName(request.author());
 
-    if (userRepository.existsByNickname(request.author())) {
+    if (userRepository.existsByAuthor(request.author())) {
       throw new CustomException(UserErrorCode.DUPLICATE_NICKNAME);
     }
 
