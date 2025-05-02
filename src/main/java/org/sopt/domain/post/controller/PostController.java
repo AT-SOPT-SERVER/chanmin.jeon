@@ -3,8 +3,7 @@ package org.sopt.domain.post.controller;
 import java.util.List;
 import org.sopt.common.response.ApiResponse;
 import org.sopt.domain.post.dto.PostDetailResponse;
-import org.sopt.domain.post.dto.PostSummaryResponse;
-import org.sopt.domain.post.entity.Post;
+import org.sopt.domain.post.dto.PostInfoResponse;
 import org.sopt.domain.post.dto.PostRequest;
 import org.sopt.domain.post.service.PostService;
 import org.springframework.http.HttpStatus;
@@ -41,12 +40,12 @@ public class PostController {
   }
 
   @GetMapping
-  public ResponseEntity<ApiResponse<List<PostSummaryResponse>>> getPosts(
+  public ResponseEntity<ApiResponse<List<PostInfoResponse>>> getPosts(
       @RequestParam(required = false) String title,
       @RequestParam(required = false) String author,
       @RequestParam(required = false) String tag
   ) {
-    List<PostSummaryResponse> posts = postService.getPosts(title, author, tag);
+    List<PostInfoResponse> posts = postService.getPosts(title, author, tag);
     return ResponseEntity
         .status(HttpStatus.OK)
         .body(ApiResponse.success(200, "게시글 조회 성공", posts));
