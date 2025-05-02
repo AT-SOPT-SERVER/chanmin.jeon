@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.sopt.domain.post.dto.PostDetailResponse;
 import org.sopt.domain.post.dto.PostRequest;
-import org.sopt.domain.post.dto.PostSummaryResponse;
+import org.sopt.domain.post.dto.PostInfoResponse;
 import org.sopt.domain.post.entity.Post;
 import org.sopt.domain.post.exception.PostErrorCode;
 import org.sopt.domain.post.repository.PostRepository;
@@ -32,6 +32,7 @@ public class PostService {
     this.userRepository = userRepository;
   }
 
+  @Transactional
   public void createPost(Long id, PostRequest request) {
     PostValidator.validateTitle(request.title());
     PostValidator.validateContent(request.content());
@@ -43,13 +44,13 @@ public class PostService {
       throw new CustomException(PostErrorCode.DUPLICATE_TITLE);
     }
 
-    Post lastPost = postRepository.findTopByOrderByCreatedAtDesc();
-    if (lastPost != null) {
-      Duration duration = Duration.between(lastPost.getCreatedAt(), LocalDateTime.now());
-      if (duration.toMinutes() < POST_INTERVAL_MINUTES) {
-        throw new CustomException(PostErrorCode.POST_INTERVAL_LIMIT);
-      }
-    }
+    postRepository.findTopByOrderByCreatedAtDesc()
+        .ifPresent(lastPost -> {
+          Duration duration = Duration.between(lastPost.getCreatedAt(), LocalDateTime.now());
+          if (duration.toMinutes() < POST_INTERVAL_MINUTES) {
+            throw new CustomException(PostErrorCode.POST_INTERVAL_LIMIT);
+          }
+        });
 
     Tag tag = Tag.parse(request.tag())
         .orElseThrow(() -> new CustomException(PostErrorCode.INVALID_TAG));
@@ -58,7 +59,7 @@ public class PostService {
     postRepository.save(post);
   }
 
-  public List<PostSummaryResponse> getPosts(String title, String author, String tag) {
+  public List<PostInfoResponse> getPosts(String title, String author, String tag) {
     boolean isTitleNull = title == null;
     boolean isAuthorNull = author == null;
     boolean isTagNull = tag == null;
@@ -69,7 +70,7 @@ public class PostService {
 
     if (isTitleNull && isAuthorNull && isTagNull) {
       return postRepository.findAll().stream()
-          .map(PostSummaryResponse::from)
+          .map(PostInfoResponse::from)
           .toList();
     }
 
@@ -83,12 +84,13 @@ public class PostService {
           .orElseThrow(() -> new CustomException(PostErrorCode.INVALID_TAG));
     }
 
+
     return postRepository.searchByCondition(
             isTitleBlank ? null : title,
             isAuthorBlank ? null : author,
             parsedTag
         ).stream()
-        .map(PostSummaryResponse::from)
+        .map(PostInfoResponse::from)
         .toList();
 
   }
