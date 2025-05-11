@@ -42,7 +42,7 @@ public class Post {
   protected Post() {
   }
 
-  public Post(String title, String content, User user, Tag tag) {
+  private Post(String title, String content, User user, Tag tag) {
     this.title = title;
     this.content = content;
     this.user = user;
