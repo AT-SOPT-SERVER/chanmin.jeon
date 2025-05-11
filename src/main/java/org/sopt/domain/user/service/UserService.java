@@ -17,28 +17,12 @@ public class UserService {
     this.userRepository = userRepository;
   }
 
-
   @Transactional
   public void createUser(UserCreateRequest request) {
-    validateNickName(request.author());
 
     if (userRepository.existsByAuthor(request.author())) {
       throw new CustomException(UserErrorCode.DUPLICATE_NICKNAME);
     }
-
-    userRepository.save(new User(request.author()));
+    userRepository.save(User.create(request.author()));
   }
-
-  private void validateNickName(String nickname) {
-    if (nickname == null || nickname.isBlank()) {
-      throw new CustomException(UserErrorCode.NICKNAME_REQUIRED);
-    }
-
-    if (nickname.length() > 10) {
-      throw new CustomException(UserErrorCode.NICKNAME_TOO_LONG);
-    }
-
-
-  }
-
 }
