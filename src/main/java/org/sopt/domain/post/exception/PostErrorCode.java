@@ -37,14 +37,17 @@ public enum PostErrorCode implements BaseErrorCode {
     this.message = message;
   }
 
+  @Override
   public HttpStatus getStatus() {
     return status;
   }
 
+  @Override
   public int getCode() {
     return code;
   }
 
+  @Override
   public String getMessage() {
     return message;
   }
