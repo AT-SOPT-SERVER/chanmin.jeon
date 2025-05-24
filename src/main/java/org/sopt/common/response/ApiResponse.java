@@ -28,8 +28,8 @@ public class ApiResponse<T> {
     return data;
   }
 
-  public static <T> ApiResponse<T> success(String message, T data) {
-    return new ApiResponse<>(200, message, data);
+  public static <T> ApiResponse<T> success(int statusCode, String message, T data) {
+    return new ApiResponse<>(statusCode, message, data);
   }
 
   public static <T> ApiResponse<T> error(int statusCode, String message, T data) {
