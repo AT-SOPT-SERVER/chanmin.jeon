@@ -1,12 +1,7 @@
 package org.sopt.domain.post.validator;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import org.sopt.domain.post.dto.PostRequest;
-import org.sopt.domain.post.entity.Post;
 import org.sopt.domain.post.exception.PostErrorCode;
-import org.sopt.domain.post.repository.PostRepository;
-import org.sopt.exception.CustomException;
+import org.sopt.global.common.exception.CustomException;
 
 public class PostValidator {
 

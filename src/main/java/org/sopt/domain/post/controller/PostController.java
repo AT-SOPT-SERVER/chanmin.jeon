@@ -1,7 +1,7 @@
 package org.sopt.domain.post.controller;
 
 import java.util.List;
-import org.sopt.common.response.ApiResponse;
+import org.sopt.global.common.exception.ApiResponse;
 import org.sopt.domain.post.dto.PostDetailResponse;
 import org.sopt.domain.post.dto.PostInfoResponse;
 import org.sopt.domain.post.dto.PostRequest;

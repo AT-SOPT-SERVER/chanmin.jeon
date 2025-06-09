@@ -1,4 +1,4 @@
-package org.sopt.common.response;
+package org.sopt.global.common.exception;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

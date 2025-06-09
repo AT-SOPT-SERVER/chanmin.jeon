@@ -14,7 +14,7 @@ import jakarta.persistence.PrePersist;
 import java.time.LocalDateTime;
 import org.sopt.domain.post.dto.PostRequest;
 import org.sopt.domain.post.type.Tag;
-import org.sopt.domain.user.entity.User;
+import org.sopt.domain.user.domain.entity.User;
 
 @Entity
 public class Post {
