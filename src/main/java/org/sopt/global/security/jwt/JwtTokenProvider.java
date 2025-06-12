@@ -1,10 +1,11 @@
-package org.sopt.global.common.jwt;
+package org.sopt.global.security.jwt;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
-import org.sopt.global.common.exception.CustomException;
-import org.sopt.global.common.exception.code.GlobalErrorCode;
+import org.sopt.global.exception.CustomException;
+import org.sopt.global.exception.code.GlobalErrorCode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -24,18 +25,18 @@ public class JwtTokenProvider {
 	private String secretKey;
 
 	@Value("${jwt.token-validity-in-seconds}")
-	private long tokenVAlidityInSeconds;
+	private long tokenValidityInSeconds;
 
 	private Key key;
 
 	@PostConstruct
 	public void init() {
-		this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
+		this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 	}
 
 	public String createToken(Long userId) {
 		Date now = new Date();
-		Date validity = new Date(now.getTime() + tokenVAlidityInSeconds * 1000);
+		Date validity = new Date(now.getTime() + tokenValidityInSeconds * 1000);
 
 		return Jwts.builder()
 			.setSubject(userId.toString())
@@ -45,20 +46,21 @@ public class JwtTokenProvider {
 			.compact();
 	}
 
-	public Long getUserId(String token) {
-		Claims claims = Jwts.parserBuilder()
-			.setSigningKey(key)
-			.build()
-			.parseClaimsJwt(token)
-			.getBody();
-
-		return Long.parseLong(claims.getSubject());
-
+	public String getSubject(String token) {
+		return parseClaims(token).getSubject();
 	}
 
-	public void validateToken(String token) {
+	private Claims parseClaims(String token) {
+		return Jwts.parserBuilder().setSigningKey(key)
+			.build()
+			.parseClaimsJws(token)
+			.getBody();
+	}
+
+	public boolean validateToken(String token) {
 		try {
 			Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+			return true;
 		} catch (ExpiredJwtException e) {
 			throw new CustomException(GlobalErrorCode.EXPIRED_TOKEN);
 		} catch (UnsupportedJwtException e) {

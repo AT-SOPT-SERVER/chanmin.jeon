@@ -1,7 +1,11 @@
-package org.sopt.global.common.jwt;
+package org.sopt.global.security.jwt;
 
 import java.io.IOException;
 
+import org.sopt.global.security.CustomUserDetailsService;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import jakarta.servlet.FilterChain;
@@ -14,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	private final JwtTokenProvider jwtTokenProvider;
+	private final CustomUserDetailsService userDetailsService;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -21,8 +26,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 		String token = resolveToken(request);
 
-		if (token != null) {
-			jwtTokenProvider.validateToken(token);
+		if (token != null && jwtTokenProvider.validateToken(token)) {
+			String userIdStr = jwtTokenProvider.getSubject(token);
+			var userDetails = userDetailsService.loadUserByUsername(userIdStr);
+
+			UsernamePasswordAuthenticationToken authentication =
+				new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+			authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+			SecurityContextHolder.getContext().setAuthentication(authentication);
 		}
 
 		filterChain.doFilter(request, response);

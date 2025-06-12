@@ -1,7 +1,7 @@
-package org.sopt.global.common.exception;
+package org.sopt.global.exception;
 
-import org.sopt.global.common.exception.code.BaseErrorCode;
-import org.sopt.global.common.exception.code.GlobalErrorCode;
+import org.sopt.global.exception.code.BaseErrorCode;
+import org.sopt.global.exception.code.GlobalErrorCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;

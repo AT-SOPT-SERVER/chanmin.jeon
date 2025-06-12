@@ -1,4 +1,4 @@
-package org.sopt.global.common.jwt.dto;
+package org.sopt.global.security.jwt.dto;
 
 public record JwtTokenResponse(
 	String accessToken
