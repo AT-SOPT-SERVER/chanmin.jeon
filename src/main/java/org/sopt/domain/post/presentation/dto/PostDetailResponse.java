@@ -1,6 +1,6 @@
-package org.sopt.domain.post.dto;
+package org.sopt.domain.post.presentation.dto;
 
-import org.sopt.domain.post.entity.Post;
+import org.sopt.domain.post.domain.entity.Post;
 
 public record PostDetailResponse (
     Long postId,
@@ -15,8 +15,8 @@ public record PostDetailResponse (
         post.getId(),
         post.getTitle(),
         post.getContent(),
-        post.getTag().name(),
-        post.getUser().getAuthor()
+        post.getUser().getAuthor(),
+        post.getTag().name()
     );
   }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -25,6 +26,7 @@ public class UserController {
 	private final UserCommandUsecase userCommandUsecase;
 
 	@PostMapping
+	@Operation(summary = "유저 생성", description = "유저를 생성합니다.")
 	public ResponseEntity<ApiResponse<Void>> createUser(@Valid @RequestBody UserCreateRequest request) {
 		UserCreateCommand command = UserCreateCommand.from(request);
 		userCommandUsecase.createUser(command);
@@ -34,6 +36,7 @@ public class UserController {
 	}
 
 	@PostMapping("/login")
+	@Operation(summary = "로그인", description = "유저 아이디와 비밀번호로 로그인을 진행합니다.")
 	public ResponseEntity<ApiResponse<JwtTokenResponse>> login(@Valid @RequestBody UserLoginRequest request) {
 		UserLoginCommand command = UserLoginCommand.from(request);
 		String token = userCommandUsecase.login(command);

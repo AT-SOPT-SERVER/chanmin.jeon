@@ -1,6 +1,6 @@
 package org.sopt.domain.post.exception;
 
-import org.sopt.global.common.exception.code.BaseErrorCode;
+import org.sopt.global.exception.code.BaseErrorCode;
 import org.springframework.http.HttpStatus;
 
 public enum PostErrorCode implements BaseErrorCode {
@@ -13,12 +13,14 @@ public enum PostErrorCode implements BaseErrorCode {
   INVALID_TAG(HttpStatus.BAD_REQUEST, 40024, "유효하지 않은 태그입니다."),
   INVALID_POST_ID_FORMAT(HttpStatus.BAD_REQUEST, 40025, "게시글 ID는 숫자여야 합니다."),
   EMPTY_SEARCH_CONDITION(HttpStatus.BAD_REQUEST, 40026, "검색 조건을 최소 하나는 입력해야 합니다."),
+  ALREADY_LIKED(HttpStatus.BAD_REQUEST, 40027, "이미 좋아요를 눌렀습니다."),
 
   // 403
   NO_PERMISSION(HttpStatus.FORBIDDEN, 40320, "해당 게시글에 대한 수정 권한이 없습니다."),
 
   // 404
   POST_NOT_FOUND(HttpStatus.NOT_FOUND, 40420, "해당 게시글을 찾을 수 없습니다."),
+  LIKE_NOT_FOUND(HttpStatus.NOT_FOUND, 40421, "좋아요 정보가 존재하지 않습니다."),
 
   // 409
   DUPLICATE_TITLE(HttpStatus.CONFLICT, 40920, "동일한 제목의 게시글이 이미 존재합니다."),

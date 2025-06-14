@@ -1,7 +1,7 @@
-package org.sopt.domain.post.validator;
+package org.sopt.domain.post.application.validator;
 
 import org.sopt.domain.post.exception.PostErrorCode;
-import org.sopt.global.common.exception.CustomException;
+import org.sopt.global.exception.CustomException;
 
 public class PostValidator {
 
