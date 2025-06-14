@@ -1,6 +1,6 @@
 package org.sopt.domain.comment.domain.entity;
 
-import org.sopt.domain.post.entity.Post;
+import org.sopt.domain.post.domain.entity.Post;
 import org.sopt.domain.user.domain.entity.User;
 import org.sopt.global.entity.BaseEntity;
 

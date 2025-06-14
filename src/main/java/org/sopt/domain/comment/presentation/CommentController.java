@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -36,6 +37,7 @@ public class CommentController {
 	private final CommentQueryUsecase commentQueryUsecase;
 
 	@PostMapping("/{postId}/comments")
+	@Operation(summary = "댓글 생성", description = "댓글을 생성합니다.")
 	public ResponseEntity<ApiResponse<Void>> createComment(
 		@PathVariable Long postId,
 		@RequestBody @Valid CommentCreateRequest request,
@@ -49,6 +51,7 @@ public class CommentController {
 	}
 
 	@GetMapping("/{postId}/comments")
+	@Operation(summary = "댓글 조회", description = "댓글을 조회합니다.")
 	public ResponseEntity<ApiResponse<List<CommentResponse>>> getComments(@PathVariable Long postId) {
 		List<CommentResponse> responses = commentQueryUsecase.getCommentsByPostId(postId);
 		return ResponseEntity
@@ -58,6 +61,7 @@ public class CommentController {
 	}
 
 	@PatchMapping("comments/{commentId}")
+	@Operation(summary = "댓글 수정", description = "댓글을 수정합니다.")
 	public ResponseEntity<ApiResponse<Void>> updateComment(
 		@PathVariable Long commentId,
 		@RequestBody @Valid CommentUpdateRequest request,
@@ -71,6 +75,7 @@ public class CommentController {
 	}
 
 	@DeleteMapping("comments/{commentId}")
+	@Operation(summary = "댓글 삭제", description = "댓글을 삭제합니다.")
 	public ResponseEntity<ApiResponse<Void>> deleteComment(
 		@PathVariable Long commentId,
 		@AuthenticationPrincipal CustomUserDetails userDetails
