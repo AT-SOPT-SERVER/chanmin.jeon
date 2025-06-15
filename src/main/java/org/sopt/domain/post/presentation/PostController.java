@@ -5,17 +5,21 @@ import java.util.List;
 import org.sopt.domain.post.application.dto.PostCreateCommand;
 import org.sopt.domain.post.application.dto.PostUpdateCommand;
 import org.sopt.domain.post.application.usecase.PostCommandUsecase;
+import org.sopt.domain.post.application.usecase.PostLikeCommandUsecase;
 import org.sopt.domain.post.application.usecase.PostQueryUsecase;
 import org.sopt.domain.post.domain.entity.Tag;
 import org.sopt.domain.post.presentation.dto.PostDetailResponse;
 import org.sopt.domain.post.presentation.dto.PostInfoResponse;
 import org.sopt.domain.post.presentation.dto.PostRequest;
 import org.sopt.domain.post.presentation.dto.PostUpdateRequest;
-import org.sopt.global.exception.ApiResponse;
+import org.sopt.global.response.ApiResponse;
+import org.sopt.global.response.PageResponse;
 import org.sopt.global.security.CustomUserDetails;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,6 +40,7 @@ public class PostController {
 
 	private final PostCommandUsecase postCommandUsecase;
 	private final PostQueryUsecase postQueryUsecase;
+	private final PostLikeCommandUsecase postLikeCommandUsecase;
 
 	@PostMapping
 	@Operation(summary = "게시글 생성", description = "게시글을 생성합니다.")
@@ -63,9 +68,9 @@ public class PostController {
 	}
 
 	@GetMapping
-	@Operation(summary = "전체 게시글 조회", description = "전체 게시글을 최신순으로 조회합니다.")
-	public ResponseEntity<ApiResponse<List<PostInfoResponse>>> getAllPosts() {
-		List<PostInfoResponse> responses = postQueryUsecase.getAllPosts();
+	@Operation(summary = "전체 게시글 조회", description = "전체 게시글 페이지네이션을 최신순으로 조회합니다.")
+	public ResponseEntity<ApiResponse<PageResponse<PostInfoResponse>>> getAllPosts(Pageable pageable) {
+		PageResponse<PostInfoResponse> responses = postQueryUsecase.getAllPosts(pageable);
 		return ResponseEntity
 			.status(HttpStatus.OK)
 			.body(ApiResponse.success(HttpStatus.OK.value(), "게시글 목록 조회에 성공했습니다.", responses));
@@ -76,10 +81,12 @@ public class PostController {
 	public ResponseEntity<ApiResponse<List<PostDetailResponse>>> searchPosts(
 		@RequestParam(required = false) String title,
 		@RequestParam(required = false) String author,
-		@RequestParam(required = false) String tag
+		@RequestParam(required = false) String tag,
+		@AuthenticationPrincipal CustomUserDetails userDetails
 	) {
 		List<PostDetailResponse> responses = postQueryUsecase.getPostsByCondition(
-			title, author, tag != null ? Tag.from(tag) : null);
+			title, author, tag != null ? Tag.from(tag) : null,
+			userDetails.getUserId());
 		return ResponseEntity
 			.status(HttpStatus.OK)
 			.body(ApiResponse.success(HttpStatus.OK.value(), "게시글 조건 검색에 성공했습니다.", responses));
@@ -88,11 +95,36 @@ public class PostController {
 	@GetMapping("/{postId}")
 	@Operation(summary = "게시글 상세 조회", description = "게시글 id로 게시글을 상세하게 조회합니다.")
 	public ResponseEntity<ApiResponse<PostDetailResponse>> getPostById(
-		@PathVariable Long postId
+		@PathVariable Long postId,
+		@AuthenticationPrincipal CustomUserDetails userDetails
 	) {
-		PostDetailResponse response = postQueryUsecase.getPostById(postId);
+		PostDetailResponse response = postQueryUsecase.getPostById(postId, userDetails.getUserId());
 		return ResponseEntity
 			.status(HttpStatus.OK)
 			.body(ApiResponse.success(HttpStatus.OK.value(), "게시글 상세 조회에 성공했습니다.", response));
+	}
+
+	@PostMapping("/{postId}/likes")
+	@Operation(summary = "게시글 좋아요", description = "게시글에 좋아요를 누릅니다.")
+	public ResponseEntity<ApiResponse<Void>> likePost(
+		@PathVariable Long postId,
+		@AuthenticationPrincipal CustomUserDetails userDetails
+	) {
+		postLikeCommandUsecase.likePost(postId, userDetails.getUserId());
+		return ResponseEntity
+			.status(HttpStatus.OK)
+			.body(ApiResponse.success(HttpStatus.OK.value(), "게시글 좋아요 완료", null));
+	}
+
+	@DeleteMapping("/{postId}/likes")
+	@Operation(summary = "게시글 좋아요 취소", description = "게시글 눌렀던 좋아요를 취소합니다.")
+	public ResponseEntity<ApiResponse<Void>> unlikePost(
+		@PathVariable Long postId,
+		@AuthenticationPrincipal CustomUserDetails userDetails
+	) {
+		postLikeCommandUsecase.unlikePost(postId, userDetails.getUserId());
+		return ResponseEntity
+			.status(HttpStatus.OK)
+			.body(ApiResponse.success(HttpStatus.OK.value(), "게시글 좋아요 취소 완료", null));
 	}
 }
