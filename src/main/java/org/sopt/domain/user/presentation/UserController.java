@@ -5,7 +5,7 @@ import org.sopt.domain.user.application.dto.UserLoginCommand;
 import org.sopt.domain.user.application.usecase.UserCommandUsecase;
 import org.sopt.domain.user.presentation.dto.UserCreateRequest;
 import org.sopt.domain.user.presentation.dto.UserLoginRequest;
-import org.sopt.global.exception.ApiResponse;
+import org.sopt.global.response.ApiResponse;
 import org.sopt.global.security.jwt.dto.JwtTokenResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

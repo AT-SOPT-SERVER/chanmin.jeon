@@ -7,16 +7,20 @@ public record PostDetailResponse (
     String title,
     String content,
     String author,
-    String tag
+    String tag,
+    int likeCount,
+    boolean liked
 ){
 
-  public static PostDetailResponse from(Post post) {
+  public static PostDetailResponse from(Post post, boolean liked, int likeCount) {
     return new PostDetailResponse(
         post.getId(),
         post.getTitle(),
         post.getContent(),
         post.getUser().getAuthor(),
-        post.getTag().name()
+        post.getTag().name(),
+        likeCount,
+        liked
     );
   }
 }
