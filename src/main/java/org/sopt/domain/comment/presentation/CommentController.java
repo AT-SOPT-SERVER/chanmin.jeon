@@ -10,7 +10,7 @@ import org.sopt.domain.comment.application.usecase.CommentQueryUsecase;
 import org.sopt.domain.comment.presentation.dto.CommentCreateRequest;
 import org.sopt.domain.comment.presentation.dto.CommentResponse;
 import org.sopt.domain.comment.presentation.dto.CommentUpdateRequest;
-import org.sopt.global.exception.ApiResponse;
+import org.sopt.global.response.ApiResponse;
 import org.sopt.global.security.CustomUserDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
