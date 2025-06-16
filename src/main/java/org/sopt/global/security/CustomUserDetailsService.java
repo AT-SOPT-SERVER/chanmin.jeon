@@ -25,5 +25,4 @@ public class CustomUserDetailsService implements UserDetailsService {
 			.orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
 	}
 
-
 }

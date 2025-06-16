@@ -1,6 +1,9 @@
 package org.sopt.domain.post.presentation.dto;
 
+import java.util.List;
+
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
 public record PostUpdateRequest(
@@ -13,7 +16,8 @@ public record PostUpdateRequest(
 	@Size(max = 1000, message = "내용은 최대 1000자까지 입력 가능합니다.")
 	String content,
 
-	@NotBlank(message = "태그는 필수입니다.")
-	String tag
+	@NotEmpty(message = "태그는 최소 1개 이상이어야 합니다.")
+	@Size(max = 2, message = "태그는 최대 2개까지 입력 가능합니다.")
+	List<String> tags
 ) {
 }

@@ -7,7 +7,7 @@ import org.sopt.domain.post.exception.PostErrorCode;
 import org.sopt.global.exception.CustomException;
 
 public enum Tag {
-  BACKEND, DATABASE, INFRA;
+  BACKEND, DATABASE, INFRA, ETC;
 
 
   public static Tag from(String value) {

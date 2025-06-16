@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @Repository
 @RequiredArgsConstructor
-public class PostRepositoryImpl implements PostRepositoryCustom{
+public class PostRepositoryImpl implements PostRepositoryCustom {
 	private final JPAQueryFactory queryFactory;
 
 	@Override
@@ -27,7 +27,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
 			.where(
 				title != null ? post.title.containsIgnoreCase(title) : null,
 				author != null ? user.author.containsIgnoreCase(author) : null,
-				tag != null ? post.tag.eq(tag) : null
+				tag != null ? post.tags.any().eq(tag) : null
 			)
 			.orderBy(post.createdAt.desc())
 			.fetch();

@@ -1,10 +1,8 @@
 package org.sopt.domain.post.application.usecase;
 
-
 import org.sopt.domain.post.application.dto.PostCreateCommand;
 import org.sopt.domain.post.application.dto.PostUpdateCommand;
 import org.sopt.domain.post.domain.entity.Post;
-import org.sopt.domain.post.domain.entity.Tag;
 import org.sopt.domain.post.domain.repository.PostRepository;
 import org.sopt.domain.post.exception.PostErrorCode;
 import org.sopt.domain.user.domain.entity.User;
@@ -32,7 +30,7 @@ public class PostCommandUsecase {
 			command.title(),
 			command.content(),
 			user,
-			Tag.from(command.tag())
+			command.tags()
 		);
 
 		postRepository.save(post);
@@ -49,7 +47,7 @@ public class PostCommandUsecase {
 		post.update(
 			command.title(),
 			command.content(),
-			Tag.from(command.tag())
+			command.tags()
 		);
 	}
 

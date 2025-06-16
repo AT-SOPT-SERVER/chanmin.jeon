@@ -3,7 +3,9 @@ package org.sopt.global.exception.code;
 import org.springframework.http.HttpStatus;
 
 public interface BaseErrorCode {
-  HttpStatus getStatus();
-  int getCode();
-  String getMessage();
+	HttpStatus getStatus();
+
+	int getCode();
+
+	String getMessage();
 }

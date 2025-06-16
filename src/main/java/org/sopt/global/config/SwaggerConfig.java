@@ -22,9 +22,9 @@ public class SwaggerConfig {
 				.title("게시판 API")
 				.version("v1.0.0")
 				.description("SOPT 36기 과제 - 게시판 서비스를 위한 API입니다"))
-				.addSecurityItem(new SecurityRequirement().addList(SECURITY_SCHEME_NAME))
-				.components(new Components()
-					.addSecuritySchemes(SECURITY_SCHEME_NAME,
+			.addSecurityItem(new SecurityRequirement().addList(SECURITY_SCHEME_NAME))
+			.components(new Components()
+				.addSecuritySchemes(SECURITY_SCHEME_NAME,
 					new SecurityScheme()
 						.name(SECURITY_SCHEME_NAME)
 						.type(SecurityScheme.Type.HTTP)

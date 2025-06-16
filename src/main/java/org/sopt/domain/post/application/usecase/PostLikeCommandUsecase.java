@@ -1,10 +1,10 @@
 package org.sopt.domain.post.application.usecase;
 
 import org.sopt.domain.post.domain.entity.Post;
-import org.sopt.domain.post.domain.repository.PostRepository;
-import org.sopt.domain.post.exception.PostErrorCode;
 import org.sopt.domain.post.domain.entity.PostLike;
 import org.sopt.domain.post.domain.repository.PostLikeRepository;
+import org.sopt.domain.post.domain.repository.PostRepository;
+import org.sopt.domain.post.exception.PostErrorCode;
 import org.sopt.domain.user.domain.entity.User;
 import org.sopt.domain.user.domain.repository.UserRepository;
 import org.sopt.domain.user.exception.UserErrorCode;

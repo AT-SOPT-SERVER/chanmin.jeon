@@ -73,6 +73,17 @@ dependencies {
 
 }
 
+// QueryDSL Q 클래스 생성을 위한 task 정의
+tasks.register("compileQuerydsl", JavaCompile) {
+    group = "build"
+    description = "Compile QueryDSL Q-types"
+
+    source = sourceSets.main.java
+    classpath = sourceSets.main.compileClasspath
+    destinationDirectory.set(file(querydslDir))
+    options.annotationProcessorPath = configurations.annotationProcessor
+}
+
 
 tasks.named('test') {
     useJUnitPlatform()
